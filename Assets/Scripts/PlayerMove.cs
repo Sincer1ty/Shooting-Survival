@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using Skills;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -5,11 +7,24 @@ public class PlayerMove : MonoBehaviour
 {
     private NavMeshAgent _agent;
     private Camera _mainCamera;
+    
+    private Dictionary<KeyCode, ISkill> _skills;
 
     private void Awake()
     {
         _agent = GetComponent<NavMeshAgent>();
         _mainCamera = Camera.main;
+    }
+
+    private void Start()
+    {
+        _skills = new Dictionary<KeyCode, ISkill>
+        {
+            { KeyCode.Q, new SkillQ() },
+            { KeyCode.W, new SkillW() },
+            { KeyCode.E, new SkillE() },
+            { KeyCode.R, new SkillR() }
+        };
     }
 
     void Update()
@@ -32,21 +47,12 @@ public class PlayerMove : MonoBehaviour
         }
         
         // 스킬
-        if (Input.GetKeyDown(KeyCode.Q))
+        foreach (var skillPair in _skills)
         {
-            Debug.Log("스킬 Q");
-        }
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            Debug.Log("스킬 W");
-        }
-        if (Input.GetKeyDown(KeyCode.E))
-        {
-            Debug.Log("스킬 E");
-        }
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            Debug.Log("스킬 R");
+            if (Input.GetKeyDown(skillPair.Key))
+            {
+                skillPair.Value.Use();
+            }
         }
     }
 }
