@@ -43,7 +43,8 @@ public class PlayerMove : MonoBehaviour
         // 좌클릭 : 공격
         else if (Input.GetMouseButtonDown(0))
         {
-            Debug.Log("공격");
+            // 공격 함수
+            Attack();
         }
         
         // 스킬
@@ -54,5 +55,18 @@ public class PlayerMove : MonoBehaviour
                 skillPair.Value.Use();
             }
         }
+    }
+
+    private void Attack()
+    {
+        // a 키를 누르고 있으면
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            // 가장 가까운 적 자동으로 공격
+            
+        }
+        
+        Debug.Log("공격");
+        
     }
 }
