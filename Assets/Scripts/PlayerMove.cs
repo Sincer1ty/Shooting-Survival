@@ -56,6 +56,16 @@ public class PlayerMove : MonoBehaviour
             }
         }
     }
+    
+    private void OnTriggerEnter(Collider other)
+    {
+        var victim = other.gameObject;
+        var damageArea = victim.GetComponent<DamageArea>();
+        if (damageArea != null)
+        {
+            damageArea.OnDamage();
+        }
+    }
 
     private void Attack()
     {
@@ -67,6 +77,8 @@ public class PlayerMove : MonoBehaviour
         }
         
         Debug.Log("공격");
+        // 공격 당한 적의 HP 소모
+        // 0 이하가 되면 사망
         
     }
 }

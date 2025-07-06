@@ -15,6 +15,6 @@ namespace Enemies
         public abstract EnemyType Type { get; }
         
         // public abstract void Attack();
-        // public abstract void Damage();
+        public abstract void Damage();
     }
 }
