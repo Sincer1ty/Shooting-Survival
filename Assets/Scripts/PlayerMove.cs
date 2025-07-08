@@ -57,18 +57,20 @@ public class PlayerMove : MonoBehaviour
         }
     }
     
-    private void OnTriggerEnter(Collider other)
-    {
-        var victim = other.gameObject;
-        var damageArea = victim.GetComponent<DamageArea>();
-        if (damageArea != null)
-        {
-            damageArea.OnDamage();
-        }
-    }
+    // 원거리시 : 총알, 화살 등에 부착
+    // private void OnTriggerEnter(Collider other)
+    // {
+    //     var victim = other.gameObject;
+    //     var damageArea = victim.GetComponent<DamageArea>();
+    //     if (damageArea != null)
+    //     {
+    //         damageArea.OnDamage();
+    //     }
+    // }
 
     private void Attack()
     {
+        // 플레이어 한테 공격 전용 Collider
         // a 키를 누르고 있으면
         if (Input.GetKeyDown(KeyCode.A))
         {
@@ -77,8 +79,5 @@ public class PlayerMove : MonoBehaviour
         }
         
         Debug.Log("공격");
-        // 공격 당한 적의 HP 소모
-        // 0 이하가 되면 사망
-        
     }
 }
