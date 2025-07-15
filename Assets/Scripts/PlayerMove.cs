@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Enemies;
 using Skills;
 using UnityEngine;
 using UnityEngine.AI;
@@ -9,6 +10,8 @@ public class PlayerMove : MonoBehaviour
     private Camera _mainCamera;
     
     private Dictionary<KeyCode, ISkill> _skills;
+    
+    public bool isAttacking = false;
 
     private void Awake()
     {
@@ -67,9 +70,24 @@ public class PlayerMove : MonoBehaviour
     //         damageArea.OnDamage();
     //     }
     // }
+    
+    // 근거리시
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!isAttacking) return; // 공격 중이 아니면 무시
+        
+        var victim = other.gameObject;
+        var enemy = victim.GetComponent<EnemyBase>();
+        if (enemy != null)
+        {
+            enemy.Damage();
+        }
+    }
 
     private void Attack()
     {
+        isAttacking = true;
+        
         // 플레이어 한테 공격 전용 Collider
         // a 키를 누르고 있으면
         if (Input.GetKeyDown(KeyCode.A))
@@ -79,5 +97,6 @@ public class PlayerMove : MonoBehaviour
         }
         
         Debug.Log("공격");
+        // 돌리기
     }
 }
