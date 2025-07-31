@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Enemies;
+// using Enemies;
 using Skills;
 using UnityEngine;
 using UnityEngine.AI;
@@ -10,13 +10,20 @@ public class PlayerMove : MonoBehaviour
     private Camera _mainCamera;
     
     private Dictionary<KeyCode, ISkill> _skills;
-    
-    public bool isAttacking = false;
 
+    private Animator _animator;
+    private static readonly int IsAttackingHash = Animator.StringToHash("isAttacking");
+
+    [SerializeField] private int maxColliders = 20;
+    private Collider[] _hitBuffer;
+    
     private void Awake()
     {
         _agent = GetComponent<NavMeshAgent>();
         _mainCamera = Camera.main;
+        _animator = GetComponent<Animator>();
+        
+        _hitBuffer = new Collider[maxColliders];
     }
 
     private void Start()
@@ -71,22 +78,39 @@ public class PlayerMove : MonoBehaviour
     //     }
     // }
     
-    // 근거리시
-    private void OnTriggerEnter(Collider other)
-    {
-        if (!isAttacking) return; // 공격 중이 아니면 무시
-        
-        var victim = other.gameObject;
-        var enemy = victim.GetComponent<EnemyBase>();
-        if (enemy != null)
-        {
-            enemy.Damage();
-        }
-    }
+    // 근거리시 : OverlapSphere 호출
+    // private void OnTriggerEnter(Collider other)
+    // { 
+    //     if (!_animator.GetBool(IsAttackingHash)) return; // 공격 중이 아니면 무시
+    //     
+    //     var victim = other.gameObject;
+    //     var enemy = victim.GetComponent<EnemyBase>();
+    //     if (enemy != null)
+    //     {
+    //         enemy.Damage();
+    //     }
+    // }
 
     private void Attack()
     {
-        isAttacking = true;
+        _animator.SetBool(IsAttackingHash, true);
+        
+        // int hitCount = Physics.OverlapSphere(
+        //     transform.position + transform.forward, 
+        //     attackRadius, 
+        //     _hitBuffer,
+        //     LayerMask.GetMask("Enemy") // 레이어 마스크 추가
+        // );
+
+        // Collider[] hits = Physics.OverlapSphere(transform.position + transform.forward, 1.5f); // 공격 범위
+        // foreach (var hit in hits)
+        // {
+        //     var enemy = hit.GetComponent<EnemyBase>();
+        //     if (enemy != null)
+        //     {
+        //         enemy.Damage();
+        //     }
+        // }
         
         // 플레이어 한테 공격 전용 Collider
         // a 키를 누르고 있으면
@@ -97,6 +121,12 @@ public class PlayerMove : MonoBehaviour
         }
         
         Debug.Log("공격");
-        // 돌리기
     }
+    
+    #region Animation Events
+    private void FinishAttack()
+    {
+        _animator.SetBool(IsAttackingHash, false);
+    }
+    #endregion
 }
