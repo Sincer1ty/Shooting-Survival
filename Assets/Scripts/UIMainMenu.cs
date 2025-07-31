@@ -7,12 +7,13 @@ public class UIMainMenu : MonoBehaviour
     public GameObject startUI;
     public GameObject mainUI;
     public GameObject optionUI;
-
+    public GameObject statusUI;
+        
     private GameObject[] allPanels;
 
     private void Start()
     {
-        allPanels = new GameObject[] { startUI, mainUI };
+        allPanels = new GameObject[] { startUI, mainUI, statusUI };
         ShowStartUI(); // 시작 시 Start UI만 보이게
     }
 
@@ -33,6 +34,11 @@ public class UIMainMenu : MonoBehaviour
     public void ShowMainUI()
     {
         ShowOnly(mainUI);
+    }
+
+    public void ShowStatusUI()
+    {
+        ShowOnly(statusUI);
     }
 
     public void ShowOptionUI()
