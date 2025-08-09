@@ -1,49 +1,67 @@
-using System;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class UIMainMenu : MonoBehaviour
 {
-    public GameObject startUI;
-    public GameObject mainUI;
-    public GameObject optionUI;
-    public GameObject statusUI;
-        
+    public GameObject startUIObj;
+    public GameObject mainUIObj;
+    public GameObject optionUIObj;
+    public GameObject statusUIObj; // 통합 스탯 UI
+    public CharacterStatus statusUI; // statsUI에 붙은 스크립트
+
+    // 캐릭터 데이터
+    public CharactorStatSo knightSO;
+    public CharactorStatSo mageSO;
+    public CharactorStatSo archorSO;
+
     private GameObject[] allPanels;
 
     private void Start()
     {
-        allPanels = new GameObject[] { startUI, mainUI, statusUI };
-        ShowStartUI(); // 시작 시 Start UI만 보이게
+        allPanels = new GameObject[] { startUIObj, mainUIObj, statusUIObj };
+        ShowStartUI();
     }
 
     private void ShowOnly(GameObject targetPanel)
     {
-        for (int i = 0; i < allPanels.Length; i++)
+        foreach (var panel in allPanels)
         {
-            GameObject panel = allPanels[i];
-            panel.SetActive(panel == targetPanel); // 다를 때는 false를 반환
+            panel.SetActive(panel == targetPanel);
         }
     }
 
     public void ShowStartUI()
     {
-        ShowOnly(startUI);
+        ShowOnly(startUIObj);
     }
 
     public void ShowMainUI()
     {
-        ShowOnly(mainUI);
+        ShowOnly(mainUIObj);
     }
 
-    public void ShowStatusUI()
+    public void ShowStatsUI(string characterId)
     {
-        ShowOnly(statusUI);
+        switch (characterId)
+        {
+            case "Knight":
+                statusUI.SetCharacter(knightSO);
+                break;
+            case "Mage":
+                statusUI.SetCharacter(mageSO);
+                break;
+            case "Archor":
+                statusUI.SetCharacter(archorSO);
+                break;
+            default:
+                Debug.LogWarning("Unknown character id: " + characterId);
+                break;
+        }
+        ShowOnly(statusUIObj);
     }
 
     public void ShowOptionUI()
     {
-        optionUI.SetActive(true);
+        optionUIObj.SetActive(true);
     }
 
     public void OnExitButtonClick()
@@ -56,6 +74,3 @@ public class UIMainMenu : MonoBehaviour
 #endif
     }
 }
-
-// OptionUI전용 스크립트 만들고 hideoptionui는 전용스크립트로 보내고
-
