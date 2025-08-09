@@ -1,13 +1,13 @@
 using System.Collections.Generic;
-// using Enemies;
 using Skills;
 using UnityEngine;
-using UnityEngine.AI;
 
 public class PlayerMove : MonoBehaviour
 {
-    private NavMeshAgent _agent;
     private Camera _mainCamera;
+    private Vector3 _destination;
+    private bool _isMove;
+    [SerializeField] private float speed = 7f;
     
     private Dictionary<KeyCode, ISkill> _skills;
 
@@ -19,7 +19,6 @@ public class PlayerMove : MonoBehaviour
     
     private void Awake()
     {
-        _agent = GetComponent<NavMeshAgent>();
         _mainCamera = Camera.main;
         _animator = GetComponent<Animator>();
         
@@ -47,7 +46,7 @@ public class PlayerMove : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit))
             {
-                _agent.SetDestination(hit.point);
+                SetDestination(hit.point);
             }
         }
         // 좌클릭 : 공격
@@ -56,6 +55,7 @@ public class PlayerMove : MonoBehaviour
             // 공격 함수
             Attack();
         }
+        Move();
         
         // 스킬
         foreach (var skillPair in _skills)
@@ -66,7 +66,25 @@ public class PlayerMove : MonoBehaviour
             }
         }
     }
-    
+
+    private void Move()
+    {
+        if (!_isMove) return;
+        
+        if (Vector3.Distance(transform.position, _destination) <= 0.1f) {
+            _isMove = false; 
+            return;
+        }
+        var dir = _destination - transform.position;
+        transform.position += dir.normalized * (Time.deltaTime * speed);
+    }
+
+    private void SetDestination(Vector3 dest)
+    {
+        _destination = dest;
+        _isMove = true;
+    }
+
     // 원거리시 : 총알, 화살 등에 부착
     // private void OnTriggerEnter(Collider other)
     // {
