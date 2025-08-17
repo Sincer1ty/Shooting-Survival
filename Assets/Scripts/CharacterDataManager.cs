@@ -14,7 +14,7 @@ public class CharacterSaveData
 
 public static class CharacterDataManager
 {
-    private static string GetFilePath(string characterId) =>
+    public static string GetFilePath(string characterId) =>
         Path.Combine(Application.persistentDataPath, $"{characterId}_stats.json");
 
     public static void Save(CharactorStatSo stat)
@@ -45,4 +45,5 @@ public static class CharacterDataManager
         stat.hp = data.hp;
         stat.mp = data.mp;
     }
+    
 }

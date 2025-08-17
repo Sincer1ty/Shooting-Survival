@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using System.IO;
 
 public class CharacterStatus : MonoBehaviour
 {
@@ -40,5 +41,20 @@ public class CharacterStatus : MonoBehaviour
         // intelligenceText.text = currentStat.intelligence.ToString();
         // hpText.text = currentStat.hp.ToString();
         // mpText.text = currentStat.mp.ToString();
+    }
+    
+    public void ResetStat()
+    {
+        if (currentStat == null) return;
+        
+        string path = CharacterDataManager.GetFilePath(currentStat.characterId);
+        
+        if (File.Exists(path))
+        {
+            File.Delete(path);
+        }
+        currentStat.ResetToDefault();
+        CharacterDataManager.Save(currentStat);
+        UpdateUI();
     }
 }
