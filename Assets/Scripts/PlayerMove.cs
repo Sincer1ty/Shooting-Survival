@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Enemies;
 using Skills;
 using UnityEngine;
 
@@ -8,12 +9,15 @@ public class PlayerMove : MonoBehaviour
     private Vector3 _destination;
     private bool _isMove;
     [SerializeField] private float speed = 7f;
+    private Rigidbody _rb;
     
     private Dictionary<KeyCode, ISkill> _skills;
-
+    
+    #region Animation
     private Animator _animator;
     private static readonly int IsAttackingHash = Animator.StringToHash("isAttacking");
-
+    #endregion
+    
     [SerializeField] private int maxColliders = 20;
     private Collider[] _hitBuffer;
     
@@ -21,6 +25,7 @@ public class PlayerMove : MonoBehaviour
     {
         _mainCamera = Camera.main;
         _animator = GetComponent<Animator>();
+        _rb = GetComponent<Rigidbody>();
         
         _hitBuffer = new Collider[maxColliders];
     }
@@ -55,7 +60,6 @@ public class PlayerMove : MonoBehaviour
             // 공격 함수
             Attack();
         }
-        Move();
         
         // 스킬
         foreach (var skillPair in _skills)
@@ -67,6 +71,11 @@ public class PlayerMove : MonoBehaviour
         }
     }
 
+    void FixedUpdate()
+    {
+        Move();
+    }
+    
     private void Move()
     {
         if (!_isMove) return;
@@ -75,8 +84,9 @@ public class PlayerMove : MonoBehaviour
             _isMove = false; 
             return;
         }
-        var dir = _destination - transform.position;
-        transform.position += dir.normalized * (Time.deltaTime * speed);
+        var dir = (_destination - transform.position).normalized;
+        Vector3 newPos = transform.position + dir * (speed * Time.fixedDeltaTime);
+        _rb.MovePosition(newPos);
     }
 
     private void SetDestination(Vector3 dest)
