@@ -124,22 +124,22 @@ public class PlayerMove : MonoBehaviour
     {
         _animator.SetBool(IsAttackingHash, true);
         
-        // int hitCount = Physics.OverlapSphere(
-        //     transform.position + transform.forward, 
-        //     attackRadius, 
-        //     _hitBuffer,
-        //     LayerMask.GetMask("Enemy") // 레이어 마스크 추가
-        // );
-
-        // Collider[] hits = Physics.OverlapSphere(transform.position + transform.forward, 1.5f); // 공격 범위
-        // foreach (var hit in hits)
-        // {
-        //     var enemy = hit.GetComponent<EnemyBase>();
-        //     if (enemy != null)
-        //     {
-        //         enemy.Damage();
-        //     }
-        // }
+        int hitCount = Physics.OverlapSphereNonAlloc(
+            transform.position + transform.forward, 
+            1.5f, 
+            _hitBuffer
+        );
+        
+        for (int i = 0; i < hitCount; ++i) 
+        {
+            // 자기 자신 무시?
+            // if (col.transform.IsChildOf(transform)) continue;
+            
+            if (_hitBuffer[i].TryGetComponent<EnemyBase>(out var enemy))
+            {
+                enemy.Damage();
+            }
+        }
         
         // 플레이어 한테 공격 전용 Collider
         // a 키를 누르고 있으면
