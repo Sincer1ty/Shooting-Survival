@@ -86,6 +86,7 @@ public class PlayerMove : MonoBehaviour
         }
         var dir = (_destination - transform.position).normalized;
         Vector3 newPos = transform.position + dir * (speed * Time.fixedDeltaTime);
+        newPos.y = transform.position.y;
         _rb.MovePosition(newPos);
     }
 
