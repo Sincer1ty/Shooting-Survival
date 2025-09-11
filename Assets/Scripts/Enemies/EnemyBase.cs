@@ -16,5 +16,10 @@ namespace Enemies
         
         // public abstract void Attack();
         public abstract void Damage();
+
+        protected virtual void OnDestroy()
+        {
+            --EnemyManager.Instance.enemyCount;
+        }
     }
 }
