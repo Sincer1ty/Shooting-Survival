@@ -5,6 +5,7 @@ public class UIMainMenu : MonoBehaviour
     public GameObject startUIObj;
     public GameObject mainUIObj;
     public GameObject optionUIObj;
+    public GameObject InGameUIObj;
     public GameObject statusUIObj; // 통합 스탯 UI
     public CharacterStatus statusUI; // statsUI에 붙은 스크립트
 
@@ -57,6 +58,11 @@ public class UIMainMenu : MonoBehaviour
                 break;
         }
         ShowOnly(statusUIObj);
+    }
+    
+    public void ShowInGameUI()
+    {
+        ShowOnly(InGameUIObj);
     }
 
     public void ShowOptionUI()
