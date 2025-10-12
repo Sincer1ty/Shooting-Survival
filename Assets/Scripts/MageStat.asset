@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MageStat
   m_EditorClassIdentifier: 
   characterId: Mage
-  strength: 5
+  strength: 3
   intelligence: 5
   hp: 100
-  mp: 50
+  mp: 100

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: ArchorStat
   m_EditorClassIdentifier: 
   characterId: Archor
-  strength: 5
-  intelligence: 5
+  strength: 7
+  intelligence: 2
   hp: 100
-  mp: 50
+  mp: 100

@@ -5,20 +5,20 @@ public class UIMainMenu : MonoBehaviour
     public GameObject startUIObj;
     public GameObject mainUIObj;
     public GameObject optionUIObj;
-    public GameObject InGameUIObj;
+    public GameObject inGameUIObj;
     public GameObject statusUIObj; // 통합 스탯 UI
     public CharacterStatus statusUI; // statsUI에 붙은 스크립트
 
     // 캐릭터 데이터
-    public CharactorStatSo knightSO;
-    public CharactorStatSo mageSO;
-    public CharactorStatSo archorSO;
+    public CharactorStatSo knightSo;
+    public CharactorStatSo mageSo;
+    public CharactorStatSo archorSo;
 
     private GameObject[] allPanels;
 
     private void Start()
     {
-        allPanels = new GameObject[] { startUIObj, mainUIObj, statusUIObj };
+        allPanels = new GameObject[] { startUIObj, mainUIObj, statusUIObj, inGameUIObj };
         ShowStartUI();
     }
 
@@ -45,13 +45,13 @@ public class UIMainMenu : MonoBehaviour
         switch (characterId)
         {
             case "Knight":
-                statusUI.SetCharacter(knightSO);
+                statusUI.SetCharacter(knightSo);
                 break;
             case "Mage":
-                statusUI.SetCharacter(mageSO);
+                statusUI.SetCharacter(mageSo);
                 break;
             case "Archor":
-                statusUI.SetCharacter(archorSO);
+                statusUI.SetCharacter(archorSo);
                 break;
             default:
                 Debug.LogWarning("Unknown character id: " + characterId);
@@ -62,7 +62,7 @@ public class UIMainMenu : MonoBehaviour
     
     public void ShowInGameUI()
     {
-        ShowOnly(InGameUIObj);
+        ShowOnly(inGameUIObj);
     }
 
     public void ShowOptionUI()
