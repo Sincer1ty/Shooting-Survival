@@ -17,3 +17,7 @@ MonoBehaviour:
   intelligence: 2
   hp: 100
   mp: 100
+  initialStrength: 7
+  initialIntelligence: 2
+  initialHp: 100
+  initialMp: 100
