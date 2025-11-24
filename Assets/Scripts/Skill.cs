@@ -19,10 +19,27 @@ public class Skill : MonoBehaviour
     
     private float currentCooldownTime; // 현재 재사용 대기 시간
     private bool isCooldown; // 현재 쿨타임이 적용 중인지 확인하는 변수
+    private bool initialized;
 
     private void Awake()
     {
         setCooldownIs(false);
+    }
+
+    private void Start()
+    {
+        initialized = true;
+    }
+
+    private void Update()
+    {
+        if (!initialized)
+            return;
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            UseSkill();
+        }
     }
 
     public void UseSkill()
@@ -30,6 +47,7 @@ public class Skill : MonoBehaviour
         if (isCooldown == true)
         {
             textSkillData.text = $"[{skillName}] Cooldown Time : {currentCooldownTime:F1}";
+            return;
         }
 
         textSkillData.text = $"Use Skill : {skillName}";
@@ -45,7 +63,22 @@ public class Skill : MonoBehaviour
 
         while (currentCooldownTime > 0)
         {
+            currentCooldownTime -= Time.deltaTime;
+            // Image UI의 fillAmount를 조절해 채워지는 이미지 모양 설정
+            imageCooldownTime.fillAmount = currentCooldownTime / maxCooldownTime;
+            // Text UI에 쿨다운 시간 표시
+            textCooldownTime.text = currentCooldownTime.ToString("F1");
             
+            yield return null;
         }
+
+        setCooldownIs(false);
+    }
+    
+    private void setCooldownIs(bool boolean)
+    {
+        isCooldown                = boolean;
+        textCooldownTime.enabled  = boolean;
+        imageCooldownTime.enabled = boolean;
     }
 }
